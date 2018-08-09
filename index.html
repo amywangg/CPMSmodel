@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>CPMS</title>
+    <!-- ========================LINK EXTERNAL CSS===================== -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    
+<link type="text/css" rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-base.css" />
+<link type="text/css" rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-dark-theme.css" />
+    <!-- for tree view -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    <!-- ========================LINK LOCAL CSS====================== -->
+    <link rel="stylesheet" href="assets/css/sidenav.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+  </head>
+
+  <body>
+    <!-- DOM SCRIPT for JQUERY/requests/electron -->
+    <script>
+      let jQuery = require('jquery');
+      let $ = require('jquery');
+      const request = require('request');
+      const {
+        dialog
+      } = require('electron').remote;
+
+    </script>
+
+    <!-- ========================FIXED HEADER====================== -->
+    <div class="header" id="postqa" style="transition: margin-left .5s">
+      <div class='historyDiv'>
+        <!-- dropdown history menu goes here -->
+        <select class="form-control history" id="history">
+        <option>Home > Dashboard</option>
+        <option>My Strategies > Stocks</option>
+        <option>Reports > Strategy View</option>
+        <option>Home > Bulletin Board</option>
+    </select>
+
+        <div class="back"><img src="assets/icons/back.png"></div>
+        <div class="forward"><img src="assets/icons/forward.png"></div>
+        <div class="allStocks">
+          <div class="dropdown" style="left:490px;position: absolute;">
+            <button class="btn btn-secondary dropdown-toggle allStocks" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      All Stocks
+                    </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="position:relative; margin-left: 0">
+              <a class="dropdown-item" href="#" aria-selected="true">View Stocks</a>
+              <a class="dropdown-item" href="#">Select</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="stockSearch" style="left: 580px; position: absolute;">
+          <select class="form-control selectpicker stockSearch" id="stockSearch" data-show-subtext="true" data-live-search="true" style="width: 170px">
+                <option data-tokens="china">TD Toronto-Dominion Bank</option>
+                <option data-tokens="china">TDG Trinidad Drilling LTD.</option>
+            </select>
+        </div>
+
+        <div class="up"><img src="assets/icons/up.png"></div>
+        <div class="down"><img src="assets/icons/down.png"></div>
+
+        <div class="allStocks">
+                <div class="dropdown" style="left:840px;position: absolute;">
+                  <button class="btn btn-secondary dropdown-toggle allStocks" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            Jul 30 2018
+                          </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="position:relative; margin-left: 0">
+                        <a class="dropdown-item" href="#" aria-selected="true">Select Archived Data</a>
+                    <a class="dropdown-item" href="#" aria-selected="true">Jul 10 2018</a>
+                    <a class="dropdown-item" href="#">Jun 13 2018</a>
+                    <a class="dropdown-item" href="#">Mar 1 2018</a>
+                    <a class="dropdown-item" href="#">Jun 8 2018</a>
+                  </div>
+                </div>
+              </div>
+
+              <div  style="left:925px;position: absolute;">
+              <button class="btn btn-secondary allStocks" >
+                    <span class="pull-left"><img style='height: 20px;width: 20px;margin-right: 2px;'src="assets/icons/equityResearch.png"></span>Equity Research
+                </button>
+            </div>
+            <div  style="left:1045px;position: absolute;">
+                    <button class="btn btn-secondary allStocks" >
+                          Portfolio Import
+                      </button>
+                  </div>
+            <div  style="right:0;position: absolute; z-index: 2;">
+                    <button class="btn btn-secondary allStocks" >
+                            <span class="pull-left"><img style='height: 20px;width: 20px;margin-right: 5px;'src="assets/icons/refresh.png"></span>  Refresh
+                      </button>
+                  </div>
+      </div>
+    </div>
+
+   
+    <!-- ========================SIDE NAVIGATION====================== -->
+    <div class="sidenav">
+      <!-- bar for resizing -->
+      <div id="split-bar"></div>
+      <div class="sideTitle">Home</div>
+      <div class="sideSearch"></div>
+
+      <!-- home treeview -->
+      <div class="treeview" id="homeTree"></div>
+      <!-- Strategy treeview -->
+      <div class="treeview" id="stratTree"></div>
+
+      <div id="split-bar-bottom"></div>
+      <!-- ========================MAIN DIRECTORY====================== -->
+      <div id='mainNav' style="overflow: visible;">
+        <!-- Request body from file -->
+        <table class='navTable' id='navTable'>
+          <tr class='navTr active' id="n4" >
+            <td><img src="assets/icons/home.png"></td>
+            <td class="main"><a href="#" class="main" id="home" onclick="selectNav('#n4','#s4'); homeTree();">Home</a></td>
+          </tr>
+          <tr class='navTr'id="n3">
+            <td><img src="assets/icons/strategies.png"></td>
+            <td class="main"><a href="#" class="main" id="strategies"  onclick="selectNav('#n3','#s3');stratTree();">Strategies</a></td>
+          </tr>
+          <tr class='navTr'id="n2">
+            <td><img src="assets/icons/porfolios.png"></td>
+            <td class="main"><a href="#" class="main" id="portfolios"  onclick="selectNav('#n2','#s2')">Portfolios</a></td>
+          </tr>
+          <tr class='navTr'id="n1">
+            <td><img src="assets/icons/reports.png"></td>
+            <td class="main"><a href="#" class="main" id="reports"  onclick="selectNav('#n1','#s1')">Reports</a></td>
+          </tr>
+          <tr class='navTr'id="n0">
+            <td><img src="assets/icons/charts.png"></td>
+            <td class="main"><a href="#" class="main" id="charts"  onclick="selectNav('#n0','#s0')">Charts</a></td>
+          </tr>
+        </table>
+        <div id="collapseNav" class="collapseNav" style="overflow: visible;">
+          <!-- Split dropup button -->
+
+          <div class="btn-group dropup imgDrop" style="float: left;display: none;">
+            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split main" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="assets/icons/home.png" style="height: 30px; width: 30px;">
+                        </button>
+            <div class="dropdown-menu" style="position: relative;">
+              <!-- Dropdown menu links -->
+              <button class="dropdown-item" type="button"><img src="assets/icons/home.png"></button>
+              <button class="dropdown-item" type="button"><img src="assets/icons/strategies.png"></button>
+              <button class="dropdown-item" type="button"><img src="assets/icons/porfolios.png"></button>
+              <button class="dropdown-item" type="button"><img src="assets/icons/reports.png"></button>
+              <button class="dropdown-item" type="button"><img src="assets/icons/charts.png"></button>
+            </div>
+          </div>
+          <div class="btn-group dropright" style="float: right; position: relative;margin:0 auto">
+                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split main" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                      </button>
+                <div class="dropdown-menu" style="position: relative; z-index: 2;">
+                  <!-- Dropdown menu links -->
+                  <button class="dropdown-item" type="button" onclick='showMore()'>Show More Buttons</button>
+                  <button class="dropdown-item" type="button" onclick='showLess()'>Show Fewer Buttons</button>
+                  <button class="dropdown-item" type="button">Navigation Pane Options...</button>
+                </div>
+              </div>
+          <div class="showLess">
+        <!-- SHOWING LESS/MORE BUTTONS ON NAV   -->
+        <button class="iNav dropdown-item active" id="s4" type="button" onclick="selectNav('#n4','#s4');homeTree();"><img src="assets/icons/home.png"></button>
+        <button class="iNav dropdown-item " id="s3" type="button" onclick="selectNav('#n3','#s3');stratTree();"><img src="assets/icons/strategies.png"></button>
+        <button class="iNav dropdown-item " id="s2" type="button" onclick="selectNav('#n2','#s2')"><img src="assets/icons/porfolios.png"></button>
+        <button class="iNav dropdown-item " id="s1" type="button" onclick="selectNav('#n1','#s1')"><img src="assets/icons/reports.png"></button>
+        <button class="iNav dropdown-item " id="s0" type="button" onclick="selectNav('#n0','#s0')"><img src="assets/icons/charts.png"></button>
+        </div>
+
+        </div>
+      </div>
+      <!-- End of side navigation pane -->
+    </div>
+
+    <!-- ========================CONTENT RENDERING AREA====================== -->
+    <!-- MAIN PANE WITH ALL THE RESULTS -->
+    <div class='content' id="content" style="padding: 0;">
+         <!-- ========================CONTENT TOOLBAR====================== -->
+      <div class="header" style="background:#464646 ;transition: margin-left .5s">
+            <div class='historyDiv'>            
+       
+                    <button class="contentHeader btn">Edit
+                          <span class="pull-left"><img style='height: 20px;width: 20px;margin-right: 5px;'src="assets/icons/edit.png"></span>
+                      </button>
+                  </div>
+            </div>
+          
+          <div class="imgBody">
+      <img  id="contentImg" src="assets/img/dashboard.PNG" style="position: relative;z-index: -1;">
+    </div>
+
+    <div class="container" id="results">
+    <div class="panel-heading" style="border-radius: 0; border:none; background: #2E2E2E; margin-top: 10px;">
+            <h1 id="test">Test.Buy</h1>
+          </div>
+          <div class="panel-body table-responsive " id="getResult">
+  
+          </div>
+        </div>
+    </div>
+
+    <!-- ========================FOOTER ====================== -->
+    <div class="footerDiv" id="footerDiv" style="background: black; height:20px;color:white; font-size: 12px;">Ready
+        <div style="float: right; margin-right: 10px;">|CAP|NUM|SCRL|</div>
+    </div>
+
+
+    <!-- ========================SOME MANDATORY DOM ELECTRON SCRIPT====================== -->
+    <script>
+      if (typeof module === 'object') {
+        window.module = module;
+        module = undefined;
+      }
+
+    </script>
+
+    <!-- ========================LINK JS ====================== -->
+    <script src="assets/js/views.js"></script>
+    <script src="assets/js/sidenav.js"></script>
+    <script src="assets/js/treedata.js"></script>
+
+    <!-- ========================EXTERNAL JS====================== -->
+    <script type="text/javascript" src="https://golden-layout.com/files/latest/js/goldenlayout.min.js"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  </body>
+
+</html>

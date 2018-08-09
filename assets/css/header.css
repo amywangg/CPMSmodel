@@ -1,0 +1,84 @@
+.header{
+    margin-left: 0;
+    height: 40px;
+    color:white;
+    background-color:#2E2E2E;
+    box-shadow: 0px 0px 10px 0px rgba(119, 119, 119, 0.8);
+    position: relative;
+}
+.history{
+    border-radius: none;
+    width:380px;
+    margin-left:10px; 
+    margin-top: 8px;
+    float: left;
+    font-size: 12px;
+}
+.historyDiv{
+    width:100%;
+    height: 40px;
+    overflow: hidden;
+}
+.history:hover,.history:focus, select.stockSearch:hover, select.stockSearch:focus{
+    border: 1.5px solid #efa953;
+    cursor: pointer;
+}
+.back{
+    margin-left: 10px;
+}
+.back,.forward{
+    height: 40px;
+    width: 40px;
+    float: left;
+    border-radius: 1px;
+}
+.up,.down{
+    position: relative;
+    height: 40px;
+    width: 40px;
+    left:275px;
+    float:left;
+}
+.up:hover,.down:hover{
+    border: 1.5px solid #efa953;
+    cursor: pointer;
+}
+
+.back:hover,.forward:hover{
+    border: 1.5px solid #efa953;
+    cursor: pointer;
+}
+.back img, .forward img,.up img,.down img{
+    margin-left: 10px;
+    margin-right: auto;
+    margin-top:10px;
+	display: block;
+}
+
+button.allStocks,button.allStocks:active,button.allStocks:focus{
+    color: white;
+    font-size: 12px;
+    background:#2E2E2E;
+    height: 40px;
+    border-bottom:none;
+    border-top:none;
+}
+button.allStocks:hover{
+    background: #efa953;
+}
+
+button.contentHeader,button.contentHeader:active,button.contentHeader:focus{
+    color: white;
+    font-size: 12px;
+    background: #4e4e4e;;
+    height: 40px;
+    border-bottom:none;
+    border-top:none;
+}
+button.contentHeader:hover{
+    background: #efa953;
+}
+select.stockSearch{
+    margin-top: 8px;
+    font-size: 12px;
+}

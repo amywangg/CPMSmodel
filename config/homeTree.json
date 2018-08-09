@@ -1,0 +1,151 @@
+[
+    {
+        "state": {
+            "selected": true
+        },
+        "text": "Dashboard",
+        "icon": "jstree-file"
+    },
+    {
+        "text": "Bulletin",
+        "icon": "jstree-file"
+    },
+    {
+        "text": "ReleaseNotes",
+        "icon": "jstree-file"
+    },
+    {
+        "text": "NewIdeas",
+        "icon": "jstree-file"
+    },
+    {
+        "text": "Workshops",
+        "icon": "jstree-file"
+    },
+    {
+        "text": "news",
+        "icon": "jstree-folder",
+        "children": [
+            {
+                "text": "DailyNews",
+                "icon": "jstree-file"
+            },
+            {
+                "text": "Stocks",
+                "icon": "jstree-folder",
+                "children": [
+                    {
+                        "text": "Added",
+                        "icon": "jstree-folder",
+                        "children": [
+                            {
+                                "text": "FullFundamental",
+                                "icon": "jstree-file"
+                            },
+                            {
+                                "text": "EstimateCoverageOnly",
+                                "icon": "jstree-file"
+                            }
+                        ]
+                    },
+                    {
+                        "text": "Removed",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "Splits",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "PendingTakeoverOffers",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "Spin-Offs&Mergers",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "Name,Symbol&CUSIPChanges",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "IndustryGroupChanges",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "IndexMembershipChanges",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "Year-EndsRolledForward",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "SpecialNotes",
+                        "icon": "jstree-file"
+                    }
+                ]
+            },
+            {
+                "text": "Data",
+                "children": [
+                    {
+                        "text": "NewRawDataItems",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "NewVariables",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "NewIndustryItems",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "NewMarketItems",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "NewBrokerItems",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "NewGraphLines",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "NewBenchmarkPortfolio",
+                        "icon": "jstree-file"
+                    }
+                ]
+            },
+            {
+                "text": "Broker",
+                "children": [
+                    {
+                        "text": "NewBroker",
+                        "icon": "jstree-file"
+                    },
+                    {
+                        "text": "BrokersRemoved",
+                        "icon": "jstree-file"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "text": "Publications",
+        "icon": "jstree-folder",
+        "children": [
+            {
+                "text": "Quarterly Reviews",
+                "icon": "jstree-file"
+            }
+        ]
+    },
+    {
+        "text": "Learning Centre",
+        "icon": "jstree-file"
+    }
+]

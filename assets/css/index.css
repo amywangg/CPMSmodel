@@ -1,0 +1,73 @@
+body{
+    background: white;
+    overflow: hidden;
+}
+div.content{
+    height: calc(100% - 60px); /* 100% Full-height */
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-left: 400px;
+    /* z-index: 1; */
+    position:absolute;
+    top: 40px;
+    left:0px;
+    right:0px;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}​
+.footerDiv{
+    background-color: black;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    font-size: 200px;
+    color: white;
+}
+
+table, tr, td {
+    border: none;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+td {
+    border: none;
+    font-size: 1.2em;
+    font-weight: 200;
+}
+th {
+    border: none;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+  .results{
+      display:none;
+  }
+  .info{
+    display:none;
+    text-align: center;
+}
+div#getResult{
+    height: 950px;
+    background: lightgrey;
+}
+.table-borderless > tbody > tr > td,
+.table-borderless > tbody > tr > th,
+.table-borderless > tfoot > tr > td,
+.table-borderless > tfoot > tr > th,
+.table-borderless > thead > tr > td,
+.table-borderless > thead > tr > th {
+    border: none;
+}
+.table-borderless > th{
+    border: 1px solid whitesmoke;
+}
+
+tbody {
+    overflow-y: auto;
+    overflow-x: auto;
+  }
+  h1#test{
+      color: white;
+  }

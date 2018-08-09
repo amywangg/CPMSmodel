@@ -1,0 +1,166 @@
+html,body{
+    height: 100%;
+}
+.sidenav {
+    position: relative; /* Stay in place */
+    height: calc(100% - 60px); /* 100% Full-height */
+    width: 400px; /* 0 width - change this with JavaScript */
+    z-index: 1; /* Stay on top */
+    left: 0;
+    background-color: white; 
+    overflow: auto;
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 0px 8px 0px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: black;
+    display: block;
+    transition: 0.3s;
+}
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+    color: black;
+}
+#split-bar-bottom {
+    background-color:gray;
+    position: relative;
+    bottom:0px;
+    height: 10px;
+    width: 400px;
+    cursor: row-resize;
+    z-index: -1;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.8);
+}
+#split-bar {
+    background-color:black;
+    float: right;
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 2;
+}
+
+.treeview{
+    position:relative;
+    z-index: -1;
+    font-size: 3em;
+    height:calc(100% - 300px); 
+    overflow-y: auto;
+}
+#mainNav{
+    background: #464646;
+    position: fixed;
+    bottom:20px;
+    width:394px;
+}
+#mainNav tr{
+    position:relative;
+    border-top: 1px solid black;
+}
+a.main{
+    position:relative;
+    font-size: 20px;
+    color: lightgray;
+    width: 100%;
+    box-shadow: 0px 0px 10px 0px rgba(119, 119, 119, 0.5);
+    padding-bottom: 30px;
+ }
+
+.main{
+    position:relative;
+    height: 25px;
+    width: 100%;
+    padding-bottom: 3px;
+}
+/* hover over home,strategies, */
+.navTr:hover ,.navTr img:hover a.main {
+    background: #efa953;
+    color: black;
+}
+td img{
+    position:relative;
+    height: 25px;
+    margin-left: 5px;
+}
+.navTable tr{width: 396px;}
+
+
+.collapseNav{
+    position: relative;
+    height:40px;
+    width:394px;
+    background: #383838;
+    box-shadow: 0px 0px 10px 2px rgba(70, 66, 66, 0.521);
+}
+button.main{
+    float: right;
+    height: 40px;
+    line-height: 40px;
+    width: 40px;
+    background: transparent;
+    border: none;
+}
+button.main:hover{
+    background: #efa953;
+}
+/* Tree view stuff */
+.treeview a{
+    font-size: 20px;
+    color: black;
+}
+.sideTitle{
+    height: 40px;
+    color:white;
+    padding-left:20px; 
+    padding-top: 5px;
+    font-size: 2em;
+    background: #464646;
+    box-shadow: 0px 0px 10px 2px rgba(119, 119, 119, 0.5);
+}
+.sideSearch{
+    height: 40px;
+    padding-left:20px; 
+    padding-top: 5px;
+    font-size: 2em;
+    background: #2E2E2E;
+    box-shadow: 5px 0px 5px 2px rgba(70, 66, 66, 0.521);
+}
+.dropdown-menu{
+    position: absolute;
+    margin-left: 20px;
+    font-size: 20px;
+    z-index: 2;
+}
+
+.active{
+    background: #db6c38;
+    color: black;
+}
+
+.showLess{
+    display:inline-flex;
+    position: relative;
+    float: right;
+}
+.showLess button{
+    width:40px;
+    height: 40px;
+    display: none;
+}
+.showLess button:hover,.showLess button:focus{
+    background: #efa953;
+}
+.showLess button.active{
+    background: #db6c38;
+    border:none;
+}
+.main img{margin-bottom: 5px;}
+.main img,.showLess img{
+    position: relative;
+    height:25px;
+    width: 25px;
+}
+.showLess img{right:65%;}

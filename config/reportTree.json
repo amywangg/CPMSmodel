@@ -1,0 +1,132 @@
+{
+    "id": "splits",
+    "parent": "stocks",
+    "text": "Splits",
+    "icon": "jstree-file"
+},
+{
+    "id": "pendTake",
+    "parent": "stocks",
+    "text": "Pending Takeover Offers",
+    "icon": "jstree-file"
+},
+{
+    "id": "spinOff",
+    "parent": "stocks",
+    "text": "Spinn-Offs & Mergers",
+    "icon": "jstree-file"
+},
+{
+    "id": "nameSym",
+    "parent": "stocks",
+    "text": "Name, Symbol & CUSIP Changes",
+    "icon": "jstree-file"
+},
+{
+    "id": "industryGroup",
+    "parent": "stocks",
+    "text": "Industry Group Changes",
+    "icon": "jstree-file"
+},
+{
+    "id": "indexMem",
+    "parent": "stocks",
+    "text": "Index Membership Changes",
+    "icon": "jstree-file"
+},
+{
+    "id": "yearEnd",
+    "parent": "stocks",
+    "text": "Year-Ends Rolled Forward",
+    "icon": "jstree-file"
+},
+{
+    "id": "specNotes",
+    "parent": "stocks",
+    "text": "Special Notes",
+    "icon": "jstree-file"
+},
+{
+    "id": "data",
+    "parent": "news",
+    "text": "Data",
+    "icon": "jstree-folder"
+},
+{
+    "id": "newRaw",
+    "parent": "data",
+    "text": "New Raw Data Items",
+    "icon": "jstree-file"
+},
+{
+    "id": "newVar",
+    "parent": "data",
+    "text": "New Variables",
+    "icon": "jstree-file"
+},
+{
+    "id": "newIn",
+    "parent": "data",
+    "text": "New Industry Items",
+    "icon": "jstree-file"
+},
+{
+    "id": "newMark",
+    "parent": "data",
+    "text": "New Market Items",
+    "icon": "jstree-file"
+},
+{
+    "id": "newBrok",
+    "parent": "data",
+    "text": "New Broker Items",
+    "icon": "jstree-file"
+},
+{
+    "id": "newGraph",
+    "parent": "data",
+    "text": "New Graph Lines",
+    "icon": "jstree-file"
+},
+{
+    "id": "newBench",
+    "parent": "data",
+    "text": "New Benchmark Portfolio",
+    "icon": "jstree-file"
+},
+{
+    "id": "broker",
+    "parent": "news",
+    "text": "Broker",
+    "icon": "jstree-folder"
+},
+{
+    "id": "brokerNew",
+    "parent": "broker",
+    "text": "New Broker",
+    "icon": "jstree-file"
+},
+{
+    "id": "brokerRem",
+    "parent": "broker",
+    "text": "Brokers Removed",
+    "icon": "jstree-file"
+},
+{
+    "id": "publications",
+    "parent": "#",
+    "text": "Publications",
+    "icon": "jstree-folder"
+},
+{
+    "id": "pubQuart",
+    "parent": "publications",
+    "text": "Quarterly Reviews",
+    "icon": "jstree-file"
+},
+{
+    "id": "learnCentre",
+    "parent": "#",
+    "text": "Learning Centre",
+    "icon": "jstree-file"
+}
