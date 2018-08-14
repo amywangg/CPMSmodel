@@ -1,22 +1,41 @@
 // Tree changing actions
     $('#stratTree').on("changed.jstree", function (e, data) {
         console.log(data.selected);
-        var str = data.selected;
-        if(str == 'j2_1'){
+        var selectedNode= data.instance.get_node(data.selected).text;
+        var id = data.selected;
+
+        if(data.instance.get_node(data.node).text != undefined){
+        var parentNode = data.instance.get_node(data.node.parent).text
+        }
+        // var parentNode = data.instance.get_node(data.node.parent).text;
+        var title = parentNode + "." + selectedNode;
+        
+        if(id == 'j2_1'){
           render ('stratQuick.png')
-        }else if(str == 'j2_2'){
+        }else if(id == 'j2_2'){
           console.log(true)
           render ('myStrat.png')
-        }else if(str == 'j1_3'){
+        }else if(id == 'j2_3'){
           render ('releasenotes.png')
-        }else if(str == 'j2_4'){
-          getRequest ('https://www.google.ca')
-        }else if(str == 'j1_5'){
-          render ('workshop.png')
-        }else if(str == 'j1_6'){
-          render ('home.png')
-        }else if(str == 'j1_7'){
-          render ('dailynews.png')
+        }else if(id == 'j2_4'){
+            $('.imgBody').css('display','none')
+            $('')
+          getRequest ('https://www.google.ca', testBuy, title, id)
+        }else if(id == 'j2_5'){
+            $('.imgBody').css('display','none')
+            getRequest ('https://www.google.ca', testSell, title, id)
+        }else if(id == 'j2_6'){
+            // $('.imgBody').css('display','none')
+            createWin(title)
+        }else if(id == 'j2_7'){
+             $('.imgBody').css('display','none')
+            getRequest ('https://www.google.ca', test2Buy, title, id)
+        }else if(id == 'j2_8'){
+            getRequest ('https://www.google.ca', test2Sell, title, id)
+        }else if(id == 'j2_10'){
+            getRequest ('https://www.google.ca', testSell, title, id)
+        }else if(id == 'j2_11'){
+            getRequest ('https://www.google.ca', testSell, title, id)
         }
       });
 // All the tree data

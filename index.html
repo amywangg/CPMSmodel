@@ -12,10 +12,12 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
     
-<link type="text/css" rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-base.css" />
-<link type="text/css" rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-dark-theme.css" />
     <!-- for tree view -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    <!-- For golden Layout -->
+
+<link type="text/css" rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-base.css" />
+<link type="text/css" rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-dark-theme.css" />
     <!-- ========================LINK LOCAL CSS====================== -->
     <link rel="stylesheet" href="assets/css/sidenav.css">
     <link rel="stylesheet" href="assets/css/header.css">
@@ -31,7 +33,7 @@
       const {
         dialog
       } = require('electron').remote;
-
+      window.$ = window.jQuery = require('jquery');
     </script>
 
     <!-- ========================FIXED HEADER====================== -->
@@ -194,19 +196,25 @@
                       </button>
                   </div>
             </div>
-          
-          <div class="imgBody">
-      <img  id="contentImg" src="assets/img/dashboard.PNG" style="position: relative;z-index: -1;">
-    </div>
 
-    <div class="container" id="results">
-    <div class="panel-heading" style="border-radius: 0; border:none; background: #2E2E2E; margin-top: 10px;">
-            <h1 id="test">Test.Buy</h1>
-          </div>
-          <div class="panel-body table-responsive " id="getResult">
+
+    <div class='id_' id='id_'  style="padding: 0;">
+
+      <div class="imgBody">
+        <img  id="contentImg" src="assets/img/dashboard.PNG" style="position: relative;z-index: -1;">
+      </div>
   
+      <div class="container" id="results">
+      <div class="panel-heading" style="border-radius: 0; border:none; background: #2E2E2E; margin-top: 10px;">
+        <h1 id="title"></h1>
+      </div>
+            <div class="panel-body table-responsive " id="getResults">
+          <!-- Table Results will appear here -->
+            </div>
           </div>
-        </div>
+
+    </div>   
+          
     </div>
 
     <!-- ========================FOOTER ====================== -->
@@ -226,11 +234,12 @@
 
     <!-- ========================LINK JS ====================== -->
     <script src="assets/js/views.js"></script>
+    <script src="assets/js/layout.js"></script>
     <script src="assets/js/sidenav.js"></script>
     <script src="assets/js/treedata.js"></script>
-
+    
     <!-- ========================EXTERNAL JS====================== -->
-    <script type="text/javascript" src="https://golden-layout.com/files/latest/js/goldenlayout.min.js"></script>
+
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
@@ -239,6 +248,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js">
+    </script>
+    <script type="text/javascript" src="https://golden-layout.com/files/latest/js/goldenlayout.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   </body>
 

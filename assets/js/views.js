@@ -1,44 +1,86 @@
-$('.navTr').hover(()=>{
+// connect the results 
+$.getScript('config/testAPI.js', () => { });
+
+$('.navTr').hover(() => {
   $(this).children().css("background", "#e4662c",
     "box-shadow", "0px 0px 10px 2px rgba(119, 119, 119, 0.5")
 })
-
-
 // functions for the content area (APIS)
-
+var pastID = 'none', arrayID=[];
 // Post Request and format data to be put in table
-function getRequest(urlString, title) {
-  
-      $.ajax({
-          url: urlString,
-          success: function(body) {
-              // Get keys and values
-              console.log(body)
-              // values = Object.keys(body).map(function(key) { return body[key];});
-              // keys = Object.keys(body);
-                $('.imgBody').css("display", "none");
-                $('#results').css("display", "block");
-                var table = arrayToTable(test, 'Test',{thead: true,attrs: {id: 'resultTab',class: 'table table-dark table-hover table-striped  thead-light'}})
-                $('#getResult').append(table);
-              },
-          error: (err)=> console.log("ERROR: " + JSON.stringify(err))
+function getRequest(urlString, data, title, id) {
+  var repeatID =false;
+  $.ajax({
+    url: urlString,
+    success: function (body) {
+      var idDiv = '.id_';
+
+      if (pastID == 'none') { // first iteration 
+        // change all of the attr of the elements
+        $(idDiv).find("#title").attr("id", "title" + id); //change title id
+        $(idDiv).find("#results").attr("id", "results" + id); //change results id
+        $(idDiv).find("#getResults").attr("id", "getResults" + id);//change getResults id
+      
+        // generate the table
+        var table = arrayToTable(data, { thead: true, attrs: { id: 'resultTab' + id, class: 'table table-dark table-hover table-striped  thead-light' } })
+        $('#getResults' + id).append(table); //add the table to the getResults area
+        $('#title' + id).text(title) //change the title text
+        $('#results'+id).css('display', 'block'); 
+
+        pastID = id; // set the previous id to track
+        arrayID.push(id)
+      } else { //changing pages or loading new data
+        arrayID.forEach((e)=>{
+          if(e.toString() == id){
+            console.log('repeated!')
+            repeatID=true
+            $('.container').not('#results'+id).css('display', 'none');
+            $('#results'+id).css('display', 'block');
+            $('#id_').css('display', 'block');
+          }
         });
+
+        console.log(repeatID)
+        if(repeatID==false){
+          tableDiv(id)
+          $('#title' + id).text(title)
+          var table = arrayToTable(data, { thead: true, attrs: { id: 'resultTab' + id, class: 'table table-dark table-hover table-striped  thead-light' } })
+          $('#getResults' + id).append(table);
+          $('.container').not('#results'+id).css('display', 'none');
+          $(idDiv).css('display', 'block');
+          pastID = id;
+          arrayID.push(id)
+        }
+        
+      }
+    },
+    error: (err) => console.log("ERROR: " + JSON.stringify(err))
+  });
 }
 
-var arrayToTable = function(results, title, options={}) {
+function tableDiv(id) {
+  console.log(pastID + ' tableDiv()')
+  var resultDiv = '#results' + id;
+  // clone previous table and change its attributes
+  $("#results"+pastID).clone().attr('id', 'results'+id).insertAfter("#results" + pastID);
+  $(resultDiv).find("#title"+pastID).attr("id", "title" + id);
+  $(resultDiv).find("#getResults" + pastID).attr("id", "getResults" + id);
+  $(resultDiv).find("#resultTab" + pastID).remove();
+}
 
-  var header=[],format, data=[], counter =0;
-  $("#resultTab").remove();
-  $.each(results.split('" "').slice(0,-1), function(index,item){
+var arrayToTable = function (results, options = {}) {
+  var header = [], format, data = [], counter = 0;
+
+  $.each(results.split('" "'), function (index, item) {
     counter++;
-    if(counter==1){
-      header = item.split('","').slice(0,-1)
-      header[0]=header[0].replace(/['"]+/g, '');
-    }else{
-      format = item.split('","').slice(0,-1)
-     format.forEach(element => {
-       data.push(element)
-     });
+    if (counter == 1) {
+      header = item.split('","')
+      header[0] = header[0].replace(/['"]+/g, '');
+    } else {
+      format = item.split('","')
+      format.forEach(element => {
+        data.push(element)
+      });
     }
   });
 
@@ -50,37 +92,34 @@ var arrayToTable = function(results, title, options={}) {
       attrs: {} // attributes for the table element
     }
 
-  options = $.extend(defaults,options);
+  options = $.extend(defaults, options);
   table.attr(options.attrs)
-  var rowNum =0;
+  var rowNum = 0;
 
   // loop through all the rows, we will deal with tfoot and thead later
-  for (i = 0; i < (data.length/header.length)+ 1; i++) {
-      if (i == 0 ){
-          row = $('<tbody> <tr />');
-          } else {
-          row = $('<tr />');
-          }
- 
+  for (i = 0; i < (data.length / header.length) + 1; i++) {
+    if (i == 0) {
+      row = $('<tbody> <tr />');
+    } else {
+      row = $('<tr />');
+    }
+
     for (j = 0; j < header.length; j++) {
-      if (i == 0 ) {
+      if (i == 0) {
         row.append($('<th scope="col"/>').html(header[j]));
-          
+
       } else {
-        row.append($('<td />').html(data[rowNum-(header.length)]));
+        row.append($('<td />').html(data[rowNum - (header.length)]));
       }
       rowNum++;
-    } 
+    }
     rows.push(row);
   }
   rows.push("</tbody>")
   // add all the rows
   table.append('<TableHeaderColumn dataField="any" dataFormat={indexN}>#</TableHeaderColumn>')
-  for (i = 0; i < (data.length/header.length)+ 1; i++) {
+  for (i = 0; i < (data.length / header.length) + 1; i++) {
     table.append(rows[i]);
   };
   return table;
 }
-
-
-var test = '"Name","Date","Symbol","Company","Rank","DAYHIGH","VLMTDAY","BIDLAST","CHGTDAY","PRCURR","DAYLOW","CHGTDY%","ASKLAST" "Test","08/08/2018","ZCL","ZCL Composites Inc.","1","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","ZAR","Zargon Oil & Gas Ltd.","2","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","Y","Yellow Pages Ltd","3","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","YGR","Yangarra Resources","4","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","YRI","Yamana Gold Inc.*","5","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","XDC","Xtreme Drilling Corp.","6","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WSP","WSP Global Inc.","7","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WIR.U","WPT Ind. REIT* (Cdn$)","8","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WOW.A","Wow Unlimited Media, A","9","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WPK","Winpak Ltd.*","10","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WCM.A","Wilmington Capital, A","11","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WCP","Whitecap Resources Inc.","12","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WPM","Wheaton Precious Metal*","13","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WTE","Westshore Terminals","14","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WPRT","Westport Fuel Systems*","15","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WN","Weston Ltd., George","16","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WJA","WestJet Airlines Ltd.","17","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WEQ","WesternOne Inc.","18","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WRX","Western Resources Corp.","19","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WEF","Western Forest Products","20","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WRG","Western Energy Services","21","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WRN","Western Copper and Gold","22","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WED","Westaim Corp.*","23","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WFT","West Fraser Timber Co.","24","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WDO","Wesdome Gold Mines Ltd.","25","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WCN","Waste Connections Inc*","26","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","WJX","Wajax Corporation","27","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","VGZ","Vista Gold Corp.*","28","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","VFF","Village Farms Int&quotl *","29","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","VIT","Victoria Gold Corp.","30","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","VB","VersaBank","31","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","VET","Vermilion Energy Inc.","32","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","NPK","Verde Agritech Plc","33","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","VLN","Velan Inc.*","34","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","VCM","Vecima Networks Inc.","35","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","VLE","Valeura Energy Inc.","36","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","VNR","Valener Inc.","37","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","UR","UrtheCast Corp.","38","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","U","Uranium Participation","39","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","URE","Ur-Energy Inc.*","40","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","UNS","Uni-Select Inc.*","41","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","UEX","UEX Corporation","42","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TWC","TWC Enterprises Limited","43","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TVA.B","TVA Group Inc., B","44","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TRQ","Turquoise Hill Ltd.*","45","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TC","Tucows Inc.*","46","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TOS","TSO3 Inc.*","47","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TNT.UN","True North Comm REIT","48","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TSU","Trisura Group Ltd.","49","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TDG","Trinidad Drilling Ltd.","50","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TMI","TriMetals Mining Inc.*","51","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TRL","Trilogy Int&quotl Partners*","52","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TRIL","Trillium Therapeutics","53","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TCN","Tricon Capital Group*","54","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TCW","Trican Well Service Ltd","55","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TZZ","Trez Capital Mortgage","56","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TV","Trevali Mining Corp.*","57","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TSL","Tree Island Steel Ltd.","58","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TGL","TransGlobe Energy Corp*","59","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TCL.A","Transcontinental Inc.","60","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TRP","TransCanada Corporation","61","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TNP","TransAtlantic Petro.*","62","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TRZ","Transat A.T. Inc.","63","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RNW","TransAlta Renewables","64","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TA","TransAlta Corporation","65","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TOU","Tourmaline Oil Corp.","66","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TXP","Touchstone Exploration","67","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TOT","Total Energy Serv. Inc","68","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TS.B","Torstar Corp., B","69","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TD","Toronto-Dominion Bank","70","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TIH","Toromont Industries Ltd","71","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TXG","Torex Gold Resources*","72","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TOG","TORC Oil & Gas Ltd.","73","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","X","TMX Group Ltd.","74","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TMR","TMAC Resources Inc.","75","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TMD","Titan Medical Inc.*","76","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TF","Timbercreek Financial","77","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TWM","Tidewater Midstream","78","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TRI","Thomson Reuters Corp*","79","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TH","Theratechnologies Inc.","80","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TSGI","The Stars Group Inc.*","81","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TFII","TFI International Inc.","82","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TVK","TerraVest Industries","83","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TGZ","Teranga Gold Corp.*","84","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TGO","TeraGo Inc.","85","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TPK","Ten Peaks Coffee Co Inc","86","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TPH","Temple Hotels Inc.","87","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","T","TELUS Corporation","88","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TCS","TECSYS Inc.","89","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TECK.B","Teck Resources Limited","90","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TKO","Taseko Mines Ltd.","91","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TNX","Tanzanian Royalty Expl.","92","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TVE","Tamarack Valley Energy","93","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","THO","Tahoe Resources Inc.*","94","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TAO","TAG Oil Ltd.","95","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SGY","Surge Energy Inc.","96","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SXP","Supremex Inc.","97","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","FIRE","Supreme Cannabis Co.","98","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SPB","Superior Plus Corp.","99","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SOY","SunOpta, Inc. *","100","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SU","Suncor Energy Inc.","101","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SLF","Sun Life Financial Inc.","102","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SMU.UN","Summit Industrial REIT","103","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SOX","Stuart Olson Inc.","104","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SQP","Strongco Corp","105","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SCB","Street Capital Group","106","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SOG","Strategic Oil & Gas Ltd","107","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SDY","Strad Energy Services","108","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SWY","Stornoway Diamond Corp.","109","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SRX","Storm Resources Ltd.","110","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SVI","StorageVault Canada","111","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RAY.A","Stingray Digital Grp ,A","112","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","STEP","STEP Energy Services","113","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SJ","Stella-Jones Inc.","114","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","DIAM","Star Diamond Corp","115","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","STN","Stantec Inc.","116","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SSRM","SSR Mining Inc.*","117","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SRHI","Sprott Resource Hldg*","118","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SII","Sprott Inc.","119","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","TOY","Spin Master Corp.*","120","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","EDT","Spectral Medical Inc.","121","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SEV","Spectra7 Microsystems *","122","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SGQ","SouthGobi Resources*","123","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SHLE","Source Energy Services","124","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SUM","Solium Capital Inc.*","125","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SNC","SNC-Lavalin Group Inc.","126","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SRU.UN","SmartCentres REIT","127","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","ZZZ","Sleep Country Canada","128","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SRT.UN","Slate Retail REIT*","129","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SOT.UN","Slate Office REIT","130","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SVM","Silvercorp Metals Inc.*","131","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SW","Sierra Wireless, Inc.*","132","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SMT","Sierra Metals Inc.*","133","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SIA","Sienna Senior Living","134","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SHOP","Shopify Inc. *","135","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","S","Sherritt Int&quotl. Corp.","136","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SCL","ShawCor Ltd.","137","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SJR.B","Shaw Communications, B","138","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SNM","ShaMaran Petroleum*","139","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","VII","Seven Generations Egy","140","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SEC","Senvest Capital Inc.","141","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SMF","Semafo Inc.*","142","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SES","Secure Energy Services","143","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SEA","Seabridge Gold Inc.","144","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SIS","Savaria Corporation","145","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SAP","Saputo Inc.","146","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SSL","Sandstorm Gold Ltd.*","147","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","SBB","Sabina Gold & Silver","148","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RUS","Russel Metals Inc.","149","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RMX","Rubicon Minerals Corp.","150","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RNX","Royal Nickel Corp.","151","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RY","Royal Bank of Canada","152","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","ROXG","Roxgold Inc.*","153","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","ROOT","Roots Corporation","154","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RSI","Rogers Sugar Inc.","155","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RCI.B","Rogers Communicat.,B","156","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RME","Rocky Mountain Dealers","157","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RBA","Ritchie Bros. Auctions*","158","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","REI.UN","RioCan REIT","159","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RFC","RIFCO Inc.","160","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RCH","Richelieu Hardware Ltd.","161","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RVX","Resverlogix Corp.*","162","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","QSR","Restaurant Brands Intl*","163","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","REKO","Reko Int&quotl Group Inc.","164","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RET.A","Reitman&quots (Cda.) Ltd.,A","165","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","R","Red Eagle Mining Corp*","166","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RECP","Recipe Unlimited Corp","167","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","REAL","Real Matters Inc.*","168","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RRX","Raging River Explor.","169","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","QST","Questor Technology Inc.","170","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","QEC","Questerre Energy Corp.","171","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","QBR.B","Quebecor Inc., B","172","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","QTRH","Quarterhill Inc.*","173","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a" "Test","08/08/2018","RUF.UN","Pure Multi-Family REIT*","174","n/a","n/a","n/a","n/a","n/a","n/a","n/a","n/a"'

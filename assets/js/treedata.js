@@ -1,5 +1,6 @@
 const jstree = require('jstree');
 const fs = require('fs');
+
 $.getScript('config/homeTree.js', () => {});
 $.getScript('config/stratTree.js', () => {});
 
@@ -11,8 +12,6 @@ $.getScript('config/stratTree.js', () => {});
       var obj = JSON.parse(data)
     });
     console.log('test home')
-   
-    
   }
     // display page when clicked
     function render (img){
@@ -24,6 +23,7 @@ $.getScript('config/stratTree.js', () => {});
     function refresh(tree){
       $(tree).jstree("refresh");
       }
+
 
   
 
