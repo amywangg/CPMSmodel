@@ -1,6 +1,18 @@
 homeTree();
 // Tree changing actions
 $('#homeTree').on("changed.jstree" , function (e, data) {
+    var selectedNode = data.instance.get_node(data.selected).text;
+    var id = data.selected;
+
+    if (data.instance.get_node(data.node).text != undefined) {
+        var parentNode = data.instance.get_node(data.node.parent).text
+        var title = parentNode + "." + selectedNode;
+    }else{
+        var title = selectedNode;
+    }
+    // var parentNode = data.instance.get_node(data.node.parent).text;
+    
+
     console.log(data.selected);
     var str = data.selected;
     if(str == 'j1_1'){
@@ -8,6 +20,7 @@ $('#homeTree').on("changed.jstree" , function (e, data) {
       render ('dashboard.png')
     }else if(str == 'j1_2'){
       console.log(true)
+      addItem(title,id)
       render ('bulletin.png')
     }else if(str == 'j1_3'){
       render ('releasenotes.png')

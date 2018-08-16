@@ -1,8 +1,8 @@
 const jstree = require('jstree');
 const fs = require('fs');
 
-$.getScript('config/homeTree.js', () => {});
-$.getScript('config/stratTree.js', () => {});
+$.getScript('assets/js/homeTree.js', () => {});
+$.getScript('assets/js/stratTree.js', () => {});
 
   function startup (){
     $.getScript('config/homeTree.js', () => {});

@@ -72,6 +72,3 @@ tbody {
   .content h1{
       color: white;
   }
-div.lm_content{
-    height: calc(100%-50px);
-}

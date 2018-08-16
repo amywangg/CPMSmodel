@@ -1,57 +1,38 @@
+var config = {
+        content: [{
+            type:'component',
+            componentName: 'Dashboard',
+            componentState: { text: 'Component 1' }      
+    }],
+    width: 1050
+};
 
-const GoldenLayout = require('golden-layout')
-var config, compName;
+var myLayout = new window.GoldenLayout( config, $('#content') );
 
+myLayout.registerComponent( 'Dashboard', function( container, state ){
+    $('#id_').appendTo(container.getElement());
+});
 
-function createWin(title){
-    console.log('hi')
-    compName=title;
-    config = {
-        settings:{
-            hasHeaders: true,
-            constrainDragToContainer: true,
-            reorderEnabled: true,
-            selectionEnabled: false,
-            popoutWholeStack: false,
-            blockedPopoutsThrowError: true,
-            closePopoutsOnUnload: true,
-            showPopoutIcon: true,
-            showMaximiseIcon: true,
-            showCloseIcon: true
-        },
-        content:[{
-            type: 'row',
-            content: [{
-                type:'component',
-                componentName: compName,
-                componentState: { text: 'Component 1' },
-        }]
-        }]
-      };
-      var myLayout = new GoldenLayout( config, $('#content') );
-  
-      myLayout.registerComponent( compName, function( container, state ){
-        $('#results').appendTo('.lm_content')      
-    });
-      
-      myLayout.init();
+myLayout.init();
 
-      
-      $(window).resize(function () {
-        myLayout.updateSize();
-        });
-}
-
-var addMenuItem = function( title, text ) {
-    var element = $( '<li>' + text + '</li>' );
-    $( '#menuContainer' ).append( element );
-
-   var newItemConfig = {
+var addItem = function( title, id ) {
+    var newItemConfig = {
         title: title,
         type: 'component',
-        componentName: 'example',
-        componentState: { text: text }
+        componentName: title,
+        componentState: { id: id }
     };
-  
-    myLayout.createDragSource( element, newItemConfig );
+myLayout.root.contentItems[ 0 ].addChild( newItemConfig );
 };
+
+$(window).resize(function () {
+    myLayout.updateSize();
+    });
+
+    $('#split-bar').mousedown(function (e) {
+        e.preventDefault();
+        $(document).mousemove(function (e) {
+        e.preventDefault();
+        myLayout.updateSize();
+        });
+    });
