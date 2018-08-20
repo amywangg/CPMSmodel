@@ -1,24 +1,34 @@
 homeTree();
 // Tree changing actions
 $('#homeTree').on("changed.jstree" , function (e, data) {
-    console.log(data.selected);
-    var str = data.selected;
-    if(str == 'j1_1'){
-      console.log(true)
-      render ('dashboard.png')
-    }else if(str == 'j1_2'){
-      console.log(true)
-      render ('bulletin.png')
-    }else if(str == 'j1_3'){
-      render ('releasenotes.png')
-    }else if(str == 'j1_4'){
-      render ('newideas.png')
-    }else if(str == 'j1_5'){
-      render ('workshop.png')
-    }else if(str == 'j1_6'){
-      render ('home.png')
-    }else if(str == 'j1_7'){
-      render ('dailynews.png')
+    var selectedNode = data.instance.get_node(data.selected).text;
+    var id = data.selected;
+
+    if (data.instance.get_node(data.node).text != undefined) {
+        if(data.instance.get_node(data.node.parent).text != undefined){
+            var parentNode = data.instance.get_node(data.node.parent).text
+            var title = parentNode + "." + selectedNode;
+        }else{
+            var title = selectedNode;
+        }
+    }else {
+        var title = 'CPMS';
+    }
+    // var parentNode = data.instance.get_node(data.node.parent).text;
+    if(id == 'j1_1'){
+        addItem(title,id,'dashboard.png')
+    }else if(id == 'j1_2'){
+      addItem(title,id,'bulletin.png')
+    }else if(id == 'j1_3'){
+        addItem(title,id,'releasenotes.png')
+    }else if(id == 'j1_4'){
+        addItem(title,id,'newideas.png')
+    }else if(id == 'j1_5'){
+        addItem(title,id,'workshop.png')
+    }else if(id == 'j1_6'){
+        addItem(title,id,'home.png')
+    }else if(id == 'j1_7'){
+        addItem(title,id,'dailynews.png')
     }
   });
 // All of the home data

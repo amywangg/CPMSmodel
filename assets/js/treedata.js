@@ -1,9 +1,11 @@
 const jstree = require('jstree');
 const fs = require('fs');
 
-$.getScript('config/homeTree.js', () => {});
-$.getScript('config/stratTree.js', () => {});
+$.getScript('assets/js/homeTree.js', () => {});
+$.getScript('assets/js/stratTree.js', () => {});
 
+
+// read tree files from JSON not working currently
   function startup (){
     $.getScript('config/homeTree.js', () => {});
     $('#start').select();
@@ -13,12 +15,7 @@ $.getScript('config/stratTree.js', () => {});
     });
     console.log('test home')
   }
-    // display page when clicked
-    function render (img){
-      $('#results').css('display','none')
-      $('.imgBody').css('display','block')
-      $('#contentImg').attr('src', 'assets/img/' + img)
-    }
+   
 
     function refresh(tree){
       $(tree).jstree("refresh");

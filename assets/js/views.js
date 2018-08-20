@@ -13,7 +13,7 @@ function getRequest(urlString, data, title, id) {
   $.ajax({
     url: urlString,
     success: function (body) {
-      var idDiv = '.id_';
+      var idDiv = '.content';
 
       if (pastID == 'none') { // first iteration 
         // change all of the attr of the elements
@@ -23,7 +23,8 @@ function getRequest(urlString, data, title, id) {
       
         // generate the table
         var table = arrayToTable(data, { thead: true, attrs: { id: 'resultTab' + id, class: 'table table-dark table-hover table-striped  thead-light' } })
-        $('#getResults' + id).append(table); //add the table to the getResults area
+        $('#getResults' + id).append(table); 
+        $('.lm_content').append($('#results'+id))//add the table to the getResults area
         $('#title' + id).text(title) //change the title text
         $('#results'+id).css('display', 'block'); 
 
@@ -36,11 +37,8 @@ function getRequest(urlString, data, title, id) {
             repeatID=true
             $('.container').not('#results'+id).css('display', 'none');
             $('#results'+id).css('display', 'block');
-            $('#id_').css('display', 'block');
           }
         });
-
-        console.log(repeatID)
         if(repeatID==false){
           tableDiv(id)
           $('#title' + id).text(title)
@@ -123,3 +121,6 @@ var arrayToTable = function (results, options = {}) {
   };
   return table;
 }
+
+
+
