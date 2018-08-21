@@ -85,3 +85,6 @@ div.id_{
 div.lm_goldenlayout{
 height: calc(100%-200px);
 }
+.imgBody{
+    overflow-x:scroll;
+}

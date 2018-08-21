@@ -1,17 +1,17 @@
 var name = 'Dashboard'
 
 var config = {
-    content: [{
-        type: 'row',
-          isClosable: false,
-          showCloseIcon: false,
+    // content: [{
+        // type: 'row',
+        //   isClosable: false,
+        //   showCloseIcon: false,
         content: [{
             type:'component',
             componentName: name,
             componentState: { id: 'lay-j1_1' }      
     }],
     id: 'lay-j1_1',
-}]
+// }]
 };
 
 var myLayout = new window.GoldenLayout( config, $('#content') );
@@ -47,10 +47,23 @@ var addItem = function( title, id ,img) {
         }
     }
 };
+var addTable = function( title, id) {
+        if (document.getElementById('lay-'+id)) {
+            var switchTab = myLayout.root.getItemsById('lay-'+id.toString())[0];
+            myLayout.root.contentItems[0].setActiveContentItem(switchTab);
+        }else{
+            var newItemConfig = {
+                title: title,
+                type: 'component',
+                componentName: 'Dashboard',
+                componentState: { id: 'lay-'+id.toString() },
+                id: 'lay-'+id.toString()
+            };
+        myLayout.root.contentItems[ 0 ].addChild( newItemConfig );
+        }
+};
 
-
-
- function render (img, id){
+function render (img, id){
 console.log(pastID)
 
 $('.container').css('display','none')//hide all table results

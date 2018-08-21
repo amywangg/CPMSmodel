@@ -6,49 +6,38 @@ $('.navTr').hover(() => {
     "box-shadow", "0px 0px 10px 2px rgba(119, 119, 119, 0.5")
 })
 // functions for the content area (APIS)
-var pastID = 'none', arrayID=[];
+var pastID = 'none';
 // Post Request and format data to be put in table
 function getRequest(urlString, data, title, id) {
-  var repeatID =false;
   $.ajax({
     url: urlString,
     success: function (body) {
-      var idDiv = '.content';
+      var idDiv = '#id_def';
 
       if (pastID == 'none') { // first iteration 
         // change all of the attr of the elements
-        $(idDiv).find("#title").attr("id", "title" + id); //change title id
-        $(idDiv).find("#results").attr("id", "results" + id); //change results id
-        $(idDiv).find("#getResults").attr("id", "getResults" + id);//change getResults id
+        $(idDiv).clone().attr("id", "id_" + id).insertAfter('#lay-'+id);
+
+        $("#id_" + id).find("#title").attr("id", "title" + id); //change title id
+        $("#id_" + id).find("#results").attr("id", "results" + id); //change results id
+        $("#id_" + id).find("#getResults").attr("id", "getResults" + id);//change getResults id
       
         // generate the table
         var table = arrayToTable(data, { thead: true, attrs: { id: 'resultTab' + id, class: 'table table-dark table-hover table-striped  thead-light' } })
         $('#getResults' + id).append(table); 
-        $('.lm_content').append($('#results'+id))//add the table to the getResults area
+        $('#id_'+id).appendTo('#lay-'+id)//add the table to the getResults area
         $('#title' + id).text(title) //change the title text
         $('#results'+id).css('display', 'block'); 
 
         pastID = id; // set the previous id to track
-        arrayID.push(id)
       } else { //changing pages or loading new data
-        arrayID.forEach((e)=>{
-          if(e.toString() == id){
-            console.log('repeated!')
-            repeatID=true
-            $('.container').not('#results'+id).css('display', 'none');
-            $('#results'+id).css('display', 'block');
-          }
-        });
-        if(repeatID==false){
           tableDiv(id)
-          $('#title' + id).text(title)
           var table = arrayToTable(data, { thead: true, attrs: { id: 'resultTab' + id, class: 'table table-dark table-hover table-striped  thead-light' } })
-          $('#getResults' + id).append(table);
-          $('.container').not('#results'+id).css('display', 'none');
-          $(idDiv).css('display', 'block');
+          $('#getResults' + id).append(table); 
+          $('#id_'+id).appendTo('#lay-'+id)//add the table to the getResults area
+          $('#title' + id).text(title) //change the title text
+          $('#results'+id).css('display', 'block'); 
           pastID = id;
-          arrayID.push(id)
-        }
         
       }
     },
@@ -58,13 +47,15 @@ function getRequest(urlString, data, title, id) {
 
 function tableDiv(id) {
   console.log(pastID + ' tableDiv()')
-  var resultDiv = '#results' + id;
-  // clone previous table and change its attributes
-  $("#results"+pastID).clone().attr('id', 'results'+id).insertAfter("#results" + pastID);
-  $(resultDiv).find("#title"+pastID).attr("id", "title" + id);
-  $(resultDiv).find("#getResults" + pastID).attr("id", "getResults" + id);
-  $(resultDiv).find("#resultTab" + pastID).remove();
-}
+          // change all of the attr of the elements
+          $('#id_def').clone().attr("id", "id_" + id).insertAfter('#lay-'+id);
+          $("#id_" + id).find("#title").attr("id", "title" + id); //change title id
+          $("#id_" + id).find("#results").attr("id", "results" + id); //change results id
+          $("#id_" + id).find("#getResults").attr("id", "getResults" + id);//change getResults id
+          $("#id_" + id).css('display','block');
+          $("#id_" + id).find(".imgBody").remove();//change getResults id
+
+        }
 
 var arrayToTable = function (results, options = {}) {
   var header = [], format, data = [], counter = 0;

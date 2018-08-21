@@ -25,31 +25,29 @@ $('#stratTree').on("changed.jstree", function (e, data) {
     } else if (id == 'j2_3') {
         addItem(title,id,'releasenotes.png')
     } else if (id == 'j2_4') {
-        $('.imgBody').css('display', 'none')
+        addTable(title,id)
         getRequest('https://www.google.ca', testBuy, title, id)
 
     } else if (id == 'j2_5') {
-        $('.imgBody').css('display', 'none')
+        addTable(title,id)
         getRequest('https://www.google.ca', testSell, title, id)
 
     } else if (id == 'j2_6') {
-        $('.imgBody').css('display', 'none')
-        // $('.imgBody').css('display','none')
-        createWin(title)
+   
     } else if (id == 'j2_7') {
-        $('.imgBody').css('display', 'none')
+        addTable(title,id)
         getRequest('https://www.google.ca', test2Buy, title, id)
 
     } else if (id == 'j2_8') {
-        $('.imgBody').css('display', 'none')
+        addTable(title,id)
         getRequest('https://www.google.ca', test2Sell, title, id)
 
     } else if (id == 'j2_10') {
-        $('.imgBody').css('display', 'none')
+        addTable(title,id)
         getRequest('https://www.google.ca', testSell, title, id)
 
     } else if (id == 'j2_11') {
-        $('.imgBody').css('display', 'none')
+        addTable(title,id)
         getRequest('https://www.google.ca', testSell, title, id)
 
     }
