@@ -5,6 +5,7 @@ $('.navTr').hover(() => {
   $(this).children().css("background", "#e4662c",
     "box-shadow", "0px 0px 10px 2px rgba(119, 119, 119, 0.5")
 })
+
 // functions for the content area (APIS)
 var pastID = 'none';
 // Post Request and format data to be put in table
@@ -113,5 +114,21 @@ var arrayToTable = function (results, options = {}) {
   return table;
 }
 
+
+function changeTheme (){
+  $('#postqa').toggleClass('light1')
+  $('.historyDiv').toggleClass('light1')
+  $('.historyDiv2').toggleClass('light2')
+  $('#mainNav').toggleClass('light2')
+  $('.sideSearch').toggleClass('light1')
+  $('.sideTitle').toggleClass('lightText')
+  $('.sideTitle').toggleClass('light2')
+  $(".btn").toggleClass("light1")
+  $("button").toggleClass("light1")
+  $("#collapseNav").toggleClass("light2")
+  $(".main").toggleClass("light1")
+  $("td").toggleClass("light1")
+  $("#split-bar").toggleClass("light1")
+}
 
 

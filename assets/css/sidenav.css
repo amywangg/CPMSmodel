@@ -164,3 +164,13 @@ button.main:hover{
     width: 25px;
 }
 .showLess img{right:65%;}
+
+.light1{
+    background: darkred
+}
+.light2{
+    background: lightcoral
+}
+.lightText{
+    color:white;
+}
